@@ -2,6 +2,6 @@ import axios from "axios";
 
 export default {
   search: function() {
-    return axios.get();
+    return axios.get(BASEURL);
   }
 };
