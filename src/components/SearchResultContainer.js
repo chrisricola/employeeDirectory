@@ -1,50 +1,69 @@
 import React, { Component } from "react";
-import SearchForm from "./SearchForm";
-import ResultList from "./ResultList";
+import EmployeeCard from "./EmployeeCard";
+// import SearchForm from "./SearchForm";
+// import ResultList from "./ResultList";
 import API from "../utils/API";
 
 class SearchResultContainer extends Component {
   state = {
+    result: [],
     search: "",
-    results: []
   };
 
-  // When this component mounts, search the Giphy API for pictures of kittens
+  // When this component mounts, search for the movie "The Matrix"
+  // componentDidMount() {
+  //   API.searchEmployee(query)
+  //     .then(res => this.setState({ result: res.data }))
+  //     .catch(err => console.log(err));
+  // };
   componentDidMount() {
-    this.searchGiphy("kittens");
-  }
-
-  searchGiphy = query => {
-    API.search(query)
-      .then(res => this.setState({ results: res.data.data }))
+    API.search()
+      .then(res => {
+        this.setState({ result: res.data })
+        console.log(res);
+      })
       .catch(err => console.log(err));
   };
-
+    
   handleInputChange = event => {
-    const name = event.target.name;
     const value = event.target.value;
+    const name = event.target.name;
     this.setState({
       [name]: value
     });
   };
 
-  // When the form is submitted, search the Giphy API for `this.state.search`
+  // When the form is submitted, search the OMDB API for the value of `this.state.search`
   handleFormSubmit = event => {
     event.preventDefault();
-    this.searchGiphy(this.state.search);
+    const value = event.target.value;
+    const name = event.target.name;
+    console.log("working")
   };
 
   render() {
     return (
-      <div>
-        <SearchForm
-          search={this.state.search}
-          handleFormSubmit={this.handleFormSubmit}
-          handleInputChange={this.handleInputChange}
+    <div>
+    <form>
+      <div className="form-group">
+        <label htmlFor="search">Search:</label>
+        <input
+          onChange={this.handleInputChange}
+          value={this.value}
+          name="search"
+          type="text"
+          className="form-control"
+          placeholder="Search For a Employee"
+          id="search"
         />
-        <ResultList results={this.state.results} />
+        <br />
+        <button onClick={this.handleFormSubmit} className="btn btn-primary">
+          Search
+        </button>
+        </div>
+      </form>
       </div>
-    );
+    )
   }
 }
 
